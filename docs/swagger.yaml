@@ -1,0 +1,84 @@
+definitions:
+  google.Incident:
+    properties:
+      condition_name:
+        description: 条件的显示名
+        type: string
+      ended_at:
+        description: 结束时间
+        type: integer
+      observed_value:
+        description: 触发值
+        type: string
+      policy_name:
+        description: 策略名称
+        type: string
+      resource_display_name:
+        description: 资源展示名称
+        type: string
+      resource_type_display_name:
+        description: 监控资源类型的显示名
+        type: string
+      scoping_project_id:
+        description: 托管指标范围的项目 ID
+        type: object
+      started_at:
+        description: 开始时间
+        type: integer
+      summary:
+        type: string
+      threshold_value:
+        description: 阈值
+        type: string
+      url:
+        description: 突发事件的 Google Cloud Console 网址
+        type: string
+    type: object
+  google.NotificationStruct:
+    properties:
+      incident:
+        $ref: '#/definitions/google.Incident'
+      version:
+        type: string
+    type: object
+  handlers.JSONResult:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a os remote executor orchestration script interface.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Alerting Webhook
+  version: v1.0.0
+paths:
+  /google/notification:
+    post:
+      description: post notification webhook
+      parameters:
+      - description: content
+        in: body
+        name: content
+        required: true
+        schema:
+          $ref: '#/definitions/google.NotificationStruct'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.JSONResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.JSONResult'
+      summary: Notification
+      tags:
+      - Google
+swagger: "2.0"
